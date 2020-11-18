@@ -62,7 +62,7 @@ idisp(imagen)
 ruido=imono(imagen);
 
 filtrado = irank(ruido, 8, 1); %este anda flama
-%idisp(filtrado);
+%figure();idisp(filtrado);
 %% 
 A=filtrado;%imagenLimpia<0.3;%para elegir el threshold hago un idisp y una linea y veo que que fa abajp
 % [P,L]=iblobs(A);
@@ -73,10 +73,6 @@ A=filtrado;%imagenLimpia<0.3;%para elegir el threshold hago un idisp y una linea
 %Iu = iconvolve(A, kdgauss(1) ); %lineas horzontales
 %Iv = iconvolve( A, kdgauss(1)' );%lineas verticales
 A = g1getBorder(A);
-%idisp(A);
-%filtrado3 = irank(filtrado2, 12, 2);
-%figure(3)
-%idisp(filtrado2);
 
 %% Detecto las esquinas de las figuras
 % X=icorner(A,'nfeat',N*4);
@@ -89,3 +85,10 @@ A = g1getBorder(A);
 
 % figure();idisp(A);
 % X.plot
+%% Agrupo los puntos en objetos
+objetos=g1agrupCorner(X,N,Ldil);
+
+%% Conversion de puntos a ancho alto y centroide
+
+
+
