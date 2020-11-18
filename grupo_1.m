@@ -60,10 +60,32 @@ idisp(imagen)
         
 %% PUEDEN COLOCAR SU CODIGO A PARTIR DE ESTE TITULO
 ruido=imono(imagen);
-S=kcircle(1);
-filtrado2=iopen(iclose(ruido,S),S);% es la que mejor va, todavia se ven poquito start y finish
-figure(2)
-idisp(filtrado2);
-filtrado3 = irank(filtrado2, 12, 2);
-figure(3)
-idisp(filtrado2);
+
+filtrado = irank(ruido, 8, 1); %este anda flama
+%idisp(filtrado);
+%% 
+A=filtrado;%imagenLimpia<0.3;%para elegir el threshold hago un idisp y una linea y veo que que fa abajp
+% [P,L]=iblobs(A);
+% tam=size(P);
+% N=tam(2);%-1;%Numero de blobs sin tener en cuenta el fondo
+[P,N,L]=g1GetBlobs(filtrado);
+%% Busco Bordes
+%Iu = iconvolve(A, kdgauss(1) ); %lineas horzontales
+%Iv = iconvolve( A, kdgauss(1)' );%lineas verticales
+A = g1getBorder(A);
+%idisp(A);
+%filtrado3 = irank(filtrado2, 12, 2);
+%figure(3)
+%idisp(filtrado2);
+
+%% Detecto las esquinas de las figuras
+% X=icorner(A,'nfeat',N*4);
+[X,Ldil]=g1getcorner(A,L,N); 
+% Ldil=idilate(L, kcircle(4));
+ idisp(Ldil, 'new')
+ X.plot
+
+%[figures] = IdentificarFiguras(N, Ldil, X);
+
+% figure();idisp(A);
+% X.plot
