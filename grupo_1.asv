@@ -59,8 +59,7 @@ end
 idisp(imagen)
         
 %% PUEDEN COLOCAR SU CODIGO A PARTIR DE ESTE TITULO
-%S=kcircle(1);
-S=ones(2,2);
+S=kcircle(1);
 filtrado1=iopen(iclose(imagen,S),S);    % es la que mejor va, todavia se ven poquito start y finish
 figure(2)
 idisp(filtrado1);
@@ -73,6 +72,6 @@ filtrado3 = iclose(iopen(filtrado1,S),S);
 figure(4)
 idisp(filtrado3);
 
-filtrado4 = irank(filtrado1, 12, 2);
+filtrado4 = iclose(iopen(filtrado1,S),S);
 figure(5)
 idisp(filtrado4);
