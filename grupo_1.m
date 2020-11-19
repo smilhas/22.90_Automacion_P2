@@ -60,51 +60,58 @@ idisp(imagen)
         
 %% PUEDEN COLOCAR SU CODIGO A PARTIR DE ESTE TITULO
 %S=kcircle(1);
-S=ones(2,2);
-filtrado1=iopen(iclose(imagen,S),S);    % es la que mejor va, todavia se ven poquito start y finish
-figure(2)
-idisp(filtrado1);
+imagen = imono(imagen);
+S=ones(1,1);
 
-filtrado2 = irank(imagen, 12, 2);
-figure(3)
-idisp(filtrado2);
+filtrado = irank(imagen, 8, S); %este anda flama, ver forma de pasarlo a uint_8
+idisp(filtrado, 'new');
 
-filtrado3 = iclose(iopen(filtrado1,S),S);
-figure(4)
-idisp(filtrado3);
-
-filtrado4 = irank(filtrado1, 12, 2);
-figure(5)
-idisp(filtrado4);
-
-ruido=imono(imagen);
-
-filtrado = irank(ruido, 8, 1); %este anda flama
-%figure();idisp(filtrado);
+% filtrado_02=iopen(iclose(imagen,S),S);    % Alternativa a irank
 %% 
 A=filtrado;%imagenLimpia<0.3;%para elegir el threshold hago un idisp y una linea y veo que que fa abajp
 % [P,L]=iblobs(A);
 % tam=size(P);
 % N=tam(2);%-1;%Numero de blobs sin tener en cuenta el fondo
 [P,N,L]=g1GetBlobs(filtrado);
-%% Busco Bordes
-%Iu = iconvolve(A, kdgauss(1) ); %lineas horzontales
-%Iv = iconvolve( A, kdgauss(1)' );%lineas verticales
-A = g1getBorder(A);
-
-%% Detecto las esquinas de las figuras
-% X=icorner(A,'nfeat',N*4);
-[X,Ldil]=g1getcorner(A,L,N); 
-% Ldil=idilate(L, kcircle(4));
- idisp(Ldil, 'new')
- X.plot
-
-%[figures] = IdentificarFiguras(N, Ldil, X);
-
-% figure();idisp(A);
+% %% Busco Bordes
+% %Iu = iconvolve(A, kdgauss(1) ); %lineas horzontales
+% %Iv = iconvolve( A, kdgauss(1)' );%lineas verticales
+% A = g1getBorder(A);
+% idisp(A, 'new')
+% 
+% %% Detecto las esquinas de las figuras
+% % X=icorner(A,'nfeat',N*4);
+% [X,Ldil]=g1getcorner(A,L,N); 
+% % Ldil=idilate(L, kcircle(4));
+% idisp(Ldil, 'new')
 % X.plot
-%% Agrupo los puntos en objetos
-objetos=g1agrupCorner(X,N,Ldil);
+% 
+% %[figures] = IdentificarFiguras(N, Ldil, X);
+% 
+% % figure();idisp(A);
+% % X.plot
+% %% Agrupo los puntos en objetos
+% objetos=g1agrupCorner(X,N,Ldil);
+% 
+% %% Conversion de puntos a ancho alto y centroide
 
-%% Conversion de puntos a ancho alto y centroide
+%% Encuentro P máximo y dibujo caja roja
+margin = 10;
+[Pmax,heightMax,bbox] = g1RequiredBlob(P,margin);
+%% Dibujo Blob máximo
+plot_box(bbox,'r');
+%plot_box(Pmax.bbox,'r','LineWidth',1.5);
+% bbox
+% Pmax.bbox
 
+%% Busco la línea
+% figure
+% imlin=Hough(filtrado);
+% idisp(filtrado)
+% imlin.plot %% Te grafica las líneas sobre la imagen
+% 
+% figure
+% imlin.lines %% Te plotea las curvas ponderadas con color en 2D
+% 
+% figure
+% mesh(imlin.A)   %% Gáfico en 3D
