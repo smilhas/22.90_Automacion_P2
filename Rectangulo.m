@@ -7,10 +7,10 @@ classdef Rectangulo
 % A(2).ycentro = 2;
 
     properties
-        xcentro;
-        ycentro;
-        ancho;
-        alto;
+        ucentro;
+        vcentro;
+        deltaU;
+        deltaV;
     end
     
     methods

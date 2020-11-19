@@ -83,12 +83,13 @@ A = g1getBorder(A);
 
 %[figures] = IdentificarFiguras(N, Ldil, X);
 
-% figure();idisp(A);
+%figure();idisp(A);
 % X.plot
 %% Agrupo los puntos en objetos
 objetos=g1agrupCorner(X,N,Ldil);
 
 %% Conversion de puntos a ancho alto y centroide
+cuadraditos=g1filtrarcorners(P,N,objetos,Ldil);
 
 
 
