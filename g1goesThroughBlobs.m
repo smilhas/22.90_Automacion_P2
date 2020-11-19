@@ -1,7 +1,13 @@
 function [goesThroughBlob,intersectNum] = g1goesThroughBlobs(segment, P)
-%g1goesThroughBlob Devueleve true si pasa por el Blob o false en el caso
-%contrario
-    %   segmen = [x1 y1; x2 y2]
+%g1goesThroughBlob Devueleve un flag "goesThroughBlob" que indica si el
+%segmento "segment" atraviesa algún Blob dentro del arreglo de Blobs P.
+%También devuelve un valor "intersectNum" que inica la cantidad de
+%intersecciónes que tuvo, en el caso de que el flag sea true.
+
+    %   segment: [x1 y1; x2 y2]
+    %   P: Arreglo de Blobs RegionFeature[]
+    
+    
     seg = [segment(1,1) segment(1,2) segment(2,1) segment(2,2)];
     N = length(P);
     blobSegs = zeros(4*N,4);
