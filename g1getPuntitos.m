@@ -5,7 +5,7 @@ function [points] = g1getPuntitos(side, angular_sep, radial_sep)
 
 points = [];
 
-for theta = 0:angular_sep:90
+for theta = angular_sep:angular_sep:90-angular_sep
     for radio = 0:radial_sep:round(sqrt(2)*side)
         x = radio * cos(theta*pi/180);
         y = radio * sin(theta*pi/180);

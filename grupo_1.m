@@ -78,4 +78,18 @@ margin = 10;
 plot_box(marginBbox,'r');
 
 %% Busco la línea
-g1goesThroughBlobs(segment,P)
+% segment = [2 2; 42 42];
+% printSegment(segment);
+% g1goesThroughBlobs(segment,P)
+
+points = g1getPuntitos(1000,90/20,50);
+XCent = [Pmax.uc Pmax.vc];
+X = g1getInflectionPoint(points,P,XCent);
+if X ~= -1
+    segment01 = [1 1; X];
+    segment02 = [X; XCent];
+    printSegment(segment01);
+    printSegment(segment02);
+end
+% figure
+% plot(points(:,1), points(:,2), 'o')
