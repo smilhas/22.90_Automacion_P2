@@ -73,27 +73,28 @@ A=filtrado;%imagenLimpia<0.3;%para elegir el threshold hago un idisp y una linea
 % tam=size(P);
 % N=tam(2);%-1;%Numero de blobs sin tener en cuenta el fondo
 [P,N,L]=g1GetBlobs(filtrado);
-% %% Busco Bordes
-% %Iu = iconvolve(A, kdgauss(1) ); %lineas horzontales
-% %Iv = iconvolve( A, kdgauss(1)' );%lineas verticales
-% A = g1getBorder(A);
-% idisp(A, 'new')
-% 
-% %% Detecto las esquinas de las figuras
-% % X=icorner(A,'nfeat',N*4);
-% [X,Ldil]=g1getcorner(A,L,N); 
-% % Ldil=idilate(L, kcircle(4));
-% idisp(Ldil, 'new')
+
+%% Busco Bordes
+%Iu = iconvolve(A, kdgauss(1) ); %lineas horzontales
+%Iv = iconvolve( A, kdgauss(1)' );%lineas verticales
+A = g1getBorder(A);
+
+%% Detecto las esquinas de las figuras
+% X=icorner(A,'nfeat',N*4);
+[X,Ldil]=g1getcorner(A,L,N); 
+% Ldil=idilate(L, kcircle(4));
+ idisp(Ldil, 'new')
+ X.plot
+
+%[figures] = IdentificarFiguras(N, Ldil, X);
+
+%figure();idisp(A);
 % X.plot
-% 
-% %[figures] = IdentificarFiguras(N, Ldil, X);
-% 
-% % figure();idisp(A);
-% % X.plot
-% %% Agrupo los puntos en objetos
-% objetos=g1agrupCorner(X,N,Ldil);
-% 
-% %% Conversion de puntos a ancho alto y centroide
+%% Agrupo los puntos en objetos
+objetos=g1agrupCorner(X,N,Ldil);
+
+%% Conversion de puntos a ancho alto y centroide
+cuadraditos=g1filtrarcorners(P,N,objetos,Ldil);
 
 %% Encuentro P máximo y dibujo caja roja
 margin = 10;
