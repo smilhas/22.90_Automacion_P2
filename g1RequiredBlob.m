@@ -6,7 +6,7 @@ function [Pmax,hmax,bbox] = g1RequiredBlob(P, margin)
     hmax = 0;
     for i=1:length(P)
         width = P(i).umax - P(i).umin;
-        if width < 500
+        if width < 500 %para sacar el blob fondo
             if width >= 10
                 height = P(i).vmax - P(i).vmin;
                 if height > hmax

@@ -8,6 +8,7 @@ function [points] = g1getPuntitos(side, angular_sep, radial_sep)
  % rectas.
 
 
+
     points = [];
 
     for theta = angular_sep:angular_sep:90-angular_sep
