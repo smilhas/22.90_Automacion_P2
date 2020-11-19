@@ -61,21 +61,35 @@ idisp(imagen)
 %% PUEDEN COLOCAR SU CODIGO A PARTIR DE ESTE TITULO
 S=ones(1,1);
 
-% Si no funciona hay que correr el make.m de en la carpeta de vision y
-% despues el startup_rvc.m script (una carpeta más arriba)
 filtrado = irank(imagen, 8, S); %este anda flama, ver forma de pasarlo a uint_8
 idisp(filtrado, 'new');
 
 % filtrado_02=iopen(iclose(imagen,S),S);    % Alternativa a irank
-%% Identifico los Blobs
+%% 
+A=filtrado;%imagenLimpia<0.3;%para elegir el threshold hago un idisp y una linea y veo que que fa abajp
+% [P,L]=iblobs(A);
+% tam=size(P);
+% N=tam(2);%-1;%Numero de blobs sin tener en cuenta el fondo
 [P,N,L]=g1GetBlobs(filtrado);
 
-%% Encuentro P máximo y dibujo caja roja
-margin = 10;
-[Pmax,heightMax,marginBbox] = g1RequiredBlob(P,margin);
+%% Busco Bordes
+%Iu = iconvolve(A, kdgauss(1) ); %lineas horzontales
+%Iv = iconvolve( A, kdgauss(1)' );%lineas verticales
+A = g1getBorder(A);
 
-% Dibujo Blob máximo
-plot_box(marginBbox,'r');
+%% Detecto las esquinas de las figuras
+% X=icorner(A,'nfeat',N*4);
+[X,Ldil]=g1getcorner(A,L,N); 
+% Ldil=idilate(L, kcircle(4));
+ idisp(Ldil, 'new')
+ X.plot
 
-%% Busco la línea
-g1goesThroughBlobs(segment,P)
+%[figures] = IdentificarFiguras(N, Ldil, X);
+
+%figure();idisp(A);
+% X.plot
+%% Agrupo los puntos en objetos
+objetos=g1agrupCorner(X,N,Ldil);
+
+%% Conversion de puntos a ancho alto y centroide
+cuadraditos=g1filtrarcorners(P,N,objetos,Ldil);
