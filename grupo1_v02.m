@@ -59,19 +59,37 @@ end
 idisp(imagen)
         
 %% PUEDEN COLOCAR SU CODIGO A PARTIR DE ESTE TITULO
-S=kcircle(1);
-filtrado1=iopen(iclose(imagen,S),S);    % es la que mejor va, todavia se ven poquito start y finish
-figure(2)
-idisp(filtrado1);
+S=ones(1,1);
 
-filtrado2 = irank(imagen, 12, 2);
-figure(3)
-idisp(filtrado2);
+filtrado = irank(imagen, 8, S); %este anda flama, ver forma de pasarlo a uint_8
+idisp(filtrado, 'new');
 
-filtrado3 = iclose(iopen(filtrado1,S),S);
-figure(4)
-idisp(filtrado3);
+% filtrado_02=iopen(iclose(imagen,S),S);    % Alternativa a irank
+%% 
+A=filtrado;%imagenLimpia<0.3;%para elegir el threshold hago un idisp y una linea y veo que que fa abajp
+% [P,L]=iblobs(A);
+% tam=size(P);
+% N=tam(2);%-1;%Numero de blobs sin tener en cuenta el fondo
+[P,N,L]=g1GetBlobs(filtrado);
 
-filtrado4 = iclose(iopen(filtrado1,S),S);
-figure(5)
-idisp(filtrado4);
+%% Busco Bordes
+%Iu = iconvolve(A, kdgauss(1) ); %lineas horzontales
+%Iv = iconvolve( A, kdgauss(1)' );%lineas verticales
+A = g1getBorder(A);
+
+%% Detecto las esquinas de las figuras
+% X=icorner(A,'nfeat',N*4);
+[X,Ldil]=g1getcorner(A,L,N); 
+% Ldil=idilate(L, kcircle(4));
+ idisp(Ldil, 'new')
+ X.plot
+
+%[figures] = IdentificarFiguras(N, Ldil, X);
+
+%figure();idisp(A);
+% X.plot
+%% Agrupo los puntos en objetos
+objetos=g1agrupCorner(X,N,Ldil);
+
+%% Conversion de puntos a ancho alto y centroide
+cuadraditos=g1filtrarcorners(P,N,objetos,Ldil);

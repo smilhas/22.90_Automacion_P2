@@ -59,60 +59,37 @@ end
 idisp(imagen)
         
 %% PUEDEN COLOCAR SU CODIGO A PARTIR DE ESTE TITULO
-%S=kcircle(1);
-imagen = imono(imagen);
 S=ones(1,1);
 
+% Si no funciona hay que correr el make.m de en la carpeta de vision y
+% despues el startup_rvc.m script (una carpeta más arriba)
 filtrado = irank(imagen, 8, S); %este anda flama, ver forma de pasarlo a uint_8
 idisp(filtrado, 'new');
 
 % filtrado_02=iopen(iclose(imagen,S),S);    % Alternativa a irank
-%% 
-A=filtrado;%imagenLimpia<0.3;%para elegir el threshold hago un idisp y una linea y veo que que fa abajp
-% [P,L]=iblobs(A);
-% tam=size(P);
-% N=tam(2);%-1;%Numero de blobs sin tener en cuenta el fondo
+%% Identifico los Blobs
 [P,N,L]=g1GetBlobs(filtrado);
-
-%% Busco Bordes
-%Iu = iconvolve(A, kdgauss(1) ); %lineas horzontales
-%Iv = iconvolve( A, kdgauss(1)' );%lineas verticales
-A = g1getBorder(A);
-
-%% Detecto las esquinas de las figuras
-% X=icorner(A,'nfeat',N*4);
-[X,Ldil]=g1getcorner(A,L,N); 
-% Ldil=idilate(L, kcircle(4));
- idisp(Ldil, 'new')
- X.plot
-
-%[figures] = IdentificarFiguras(N, Ldil, X);
-
-%figure();idisp(A);
-% X.plot
-%% Agrupo los puntos en objetos
-objetos=g1agrupCorner(X,N,Ldil);
-
-%% Conversion de puntos a ancho alto y centroide
-cuadraditos=g1filtrarcorners(P,N,objetos,Ldil);
 
 %% Encuentro P máximo y dibujo caja roja
 margin = 10;
-[Pmax,heightMax,bbox] = g1RequiredBlob(P,margin);
-%% Dibujo Blob máximo
-plot_box(bbox,'r');
-%plot_box(Pmax.bbox,'r','LineWidth',1.5);
-% bbox
-% Pmax.bbox
+[Pmax,heightMax,marginBbox] = g1RequiredBlob(P,margin);
+
+% Dibujo Blob máximo
+plot_box(marginBbox,'r');
 
 %% Busco la línea
+% segment = [2 2; 42 42];
+% printSegment(segment);
+% g1goesThroughBlobs(segment,P)
+
+points = g1getPuntitos(1000,90/20,50);
+XCent = [Pmax.uc Pmax.vc];
+X = g1getInflectionPoint(points,P,XCent);
+if X ~= -1
+    segment01 = [1 1; X];
+    segment02 = [X; XCent];
+    printSegment(segment01);
+    printSegment(segment02);
+end
 % figure
-% imlin=Hough(filtrado);
-% idisp(filtrado)
-% imlin.plot %% Te grafica las líneas sobre la imagen
-% 
-% figure
-% imlin.lines %% Te plotea las curvas ponderadas con color en 2D
-% 
-% figure
-% mesh(imlin.A)   %% Gáfico en 3D
+% plot(points(:,1), points(:,2), 'o')
