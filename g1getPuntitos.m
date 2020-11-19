@@ -1,6 +1,8 @@
 function [points] = g1getPuntitos(side, angular_sep, radial_sep)
 %UNTITLED3 Summary of this function goes here
-%   Detailed explanation goes here
+%   side: ancho en pixeles
+%angular_step: angulo en grados
+%radial_step: separaciaon radial entre puntito y puntito en pixeles
 
 
 points = [];

@@ -65,13 +65,15 @@ S=ones(1,1);
 % despues el startup_rvc.m script (una carpeta más arriba)
 filtrado = irank(imagen, 8, S); %este anda flama, ver forma de pasarlo a uint_8
 idisp(filtrado, 'new');
-
-% filtrado_02=iopen(iclose(imagen,S),S);    % Alternativa a irank
+% S2=kcircle(1);
+% filtrado_02=iopen(iclose(imagen,S2),S2);    % Alternativa a irank
+% figure();idisp(filtrado_02);
 %% Identifico los Blobs
 [P,N,L]=g1GetBlobs(filtrado);
 
 %% Encuentro P máximo y dibujo caja roja
 margin = 10;
+[P,base]=g1removeblobsBase(P); %remuevo el fondo
 [Pmax,heightMax,marginBbox] = g1RequiredBlob(P,margin);
 
 % Dibujo Blob máximo
